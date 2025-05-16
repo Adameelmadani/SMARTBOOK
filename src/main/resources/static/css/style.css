@@ -1,0 +1,42 @@
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
+.navbar-brand {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.card-img-top {
+  height: 200px;
+  object-fit: cover;
+}
+
+.jumbotron {
+  background-color: #f8f9fa;
+}
+
+.rating .fa-star {
+  color: #ffc107;
+}
+
+footer {
+  margin-top: auto;
+}
+
+/* Book detail page */
+.rating-input .form-check-label {
+  cursor: pointer;
+}
+
+/* Dashboard */
+.progress {
+  height: 20px;
+  margin-bottom: 5px;
+}

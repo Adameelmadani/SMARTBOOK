@@ -1,0 +1,17 @@
+com\smartbook\model\Rating.class
+com\smartbook\SmartBookApplication.class
+com\smartbook\repository\BookRepository.class
+com\smartbook\model\BookProgress.class
+com\smartbook\repository\UserRepository.class
+com\smartbook\controller\BookController.class
+com\smartbook\service\UserDetailsServiceImpl.class
+com\smartbook\controller\HomeController.class
+com\smartbook\repository\RoleRepository.class
+com\smartbook\controller\AuthController.class
+com\smartbook\model\ERole.class
+com\smartbook\config\DatabaseInitializer.class
+com\smartbook\model\User.class
+com\smartbook\model\Role.class
+com\smartbook\security\UserDetailsImpl.class
+com\smartbook\security\WebSecurityConfig.class
+com\smartbook\model\Book.class
