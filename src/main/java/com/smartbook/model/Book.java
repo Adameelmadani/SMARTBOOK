@@ -42,6 +42,8 @@ public class Book {
     
     private String coverImagePath;
     
+    private Double averageRating = 0.0;
+
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
     private Set<BookProgress> bookProgresses = new HashSet<>();
     
@@ -58,6 +60,10 @@ public class Book {
             sum += rating.getRating();
         }
         return sum / ratings.size();
+    }
+
+    public void setAverageRating(Double averageRating) {
+        this.averageRating = averageRating;
     }
     
     @Override

@@ -103,7 +103,7 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-4 mb-4" th:each="book : ${books}" th:if="${bookStat.index < 3}">
+                            <div class="col-md-4 mb-4" th:each="book : ${recommendedBooks}" th:if="${book != null}">
                                 <div class="card h-100">
                                     <img th:src="${book.coverImagePath != null} ? ${book.coverImagePath} : '/images/default-cover.jpg'" 
                                          class="card-img-top" alt="Book Cover">
@@ -113,7 +113,7 @@
                                         <div class="d-flex justify-content-between align-items-center">
                                             <small class="text-muted" th:text="${book.genre}">Genre</small>
                                             <div class="rating">
-                                                <span th:text="${#numbers.formatDecimal(book.averageRating, 1, 1)}">4.5</span>
+                                                <span th:text="${book.averageRating != null ? #numbers.formatDecimal(book.averageRating, 1, 1) : '0.0'}">4.5</span>
                                                 <i class="fas fa-star text-warning"></i>
                                             </div>
                                         </div>
@@ -122,6 +122,12 @@
                                         <a th:href="@{/book/{id}(id=${book.id})}" class="btn btn-sm btn-primary btn-block">Read Now</a>
                                     </div>
                                 </div>
+                            </div>
+                            
+                            <!-- Show message if no recommendations available -->
+                            <div class="col-12 text-center" th:if="${recommendedBooks == null || recommendedBooks.isEmpty()}">
+                                <p>Rate more books to get personalized recommendations!</p>
+                                <a href="/discover" class="btn btn-primary">Discover Books</a>
                             </div>
                         </div>
                     </div>

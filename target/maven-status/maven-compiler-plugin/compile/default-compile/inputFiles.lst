@@ -1,10 +1,14 @@
 D:\ENSAM\ENSAM S6\SMARTBOOK\src\main\java\com\smartbook\model\Book.java
+D:\ENSAM\ENSAM S6\SMARTBOOK\src\main\java\com\smartbook\config\DataSeeder.java
 D:\ENSAM\ENSAM S6\SMARTBOOK\src\main\java\com\smartbook\model\BookProgress.java
 D:\ENSAM\ENSAM S6\SMARTBOOK\src\main\java\com\smartbook\repository\RoleRepository.java
 D:\ENSAM\ENSAM S6\SMARTBOOK\src\main\java\com\smartbook\controller\BookController.java
+D:\ENSAM\ENSAM S6\SMARTBOOK\src\main\java\com\smartbook\repository\BookProgressRepository.java
+D:\ENSAM\ENSAM S6\SMARTBOOK\src\main\java\com\smartbook\service\RecommendationService.java
 D:\ENSAM\ENSAM S6\SMARTBOOK\src\main\java\com\smartbook\model\ERole.java
 D:\ENSAM\ENSAM S6\SMARTBOOK\src\main\java\com\smartbook\model\Role.java
 D:\ENSAM\ENSAM S6\SMARTBOOK\src\main\java\com\smartbook\controller\AuthController.java
+D:\ENSAM\ENSAM S6\SMARTBOOK\src\main\java\com\smartbook\repository\RatingRepository.java
 D:\ENSAM\ENSAM S6\SMARTBOOK\src\main\java\com\smartbook\model\User.java
 D:\ENSAM\ENSAM S6\SMARTBOOK\src\main\java\com\smartbook\config\DatabaseInitializer.java
 D:\ENSAM\ENSAM S6\SMARTBOOK\src\main\java\com\smartbook\SmartBookApplication.java
