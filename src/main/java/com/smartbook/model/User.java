@@ -1,13 +1,16 @@
 package com.smartbook.model;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -16,10 +19,11 @@ import java.util.Set;
            @UniqueConstraint(columnNames = "username"),
            @UniqueConstraint(columnNames = "email")
        })
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
+@ToString(exclude = {"bookProgresses", "ratings"})
 public class User {
-    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -53,5 +57,18 @@ public class User {
         this.username = username;
         this.email = email;
         this.password = password;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id);
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

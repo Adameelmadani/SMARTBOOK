@@ -1,20 +1,24 @@
 package com.smartbook.model;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "books")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
+@ToString(exclude = {"bookProgresses", "ratings"})
 public class Book {
-    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -44,7 +48,6 @@ public class Book {
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
     private Set<Rating> ratings = new HashSet<>();
     
-    // Calculate average rating
     @Transient
     public Double getAverageRating() {
         if (ratings.isEmpty()) {
@@ -55,5 +58,18 @@ public class Book {
             sum += rating.getRating();
         }
         return sum / ratings.size();
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Book book = (Book) o;
+        return Objects.equals(id, book.id);
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
