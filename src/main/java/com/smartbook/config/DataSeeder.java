@@ -7,7 +7,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
-import org.springframework.context.annotation.Profile;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,7 +18,6 @@ import java.util.List;
 import java.util.Set;
 
 @Configuration
-@Profile("dev") // Only run in development environment
 public class DataSeeder {
 
     @Autowired
@@ -106,32 +104,32 @@ public class DataSeeder {
         book1.setAuthor("F. Scott Fitzgerald");
         book1.setGenre("Classic");
         book1.setDescription("A story of wealth, love, and tragedy in the Roaring Twenties.");
-        book1.setFilePath("/books/greatgatsby.pdf");
-        book1.setCoverImagePath("/images/covers/greatgatsby.jpg");
+        book1.setFilePath("greatgatsby.pdf");
+        book1.setCoverImagePath("/images/covers/greatgatsby.svg");
         
         Book book2 = new Book();
         book2.setTitle("To Kill a Mockingbird");
         book2.setAuthor("Harper Lee");
         book2.setGenre("Classic");
         book2.setDescription("A story about racial injustice and moral growth in the American South.");
-        book2.setFilePath("/books/tokillamockingbird.pdf");
-        book2.setCoverImagePath("/images/covers/tokillamockingbird.jpg");
+        book2.setFilePath("tokillamockingbird.pdf");
+        book2.setCoverImagePath("/images/covers/tokillamockingbird.svg");
         
         Book book3 = new Book();
         book3.setTitle("1984");
         book3.setAuthor("George Orwell");
         book3.setGenre("Dystopian");
         book3.setDescription("A dystopian novel about totalitarianism and surveillance.");
-        book3.setFilePath("/books/1984.pdf");
-        book3.setCoverImagePath("/images/covers/1984.jpg");
+        book3.setFilePath("1984.pdf");
+        book3.setCoverImagePath("/images/covers/1984.svg");
         
         Book book4 = new Book();
         book4.setTitle("The Hobbit");
         book4.setAuthor("J.R.R. Tolkien");
         book4.setGenre("Fantasy");
         book4.setDescription("A fantasy adventure about Bilbo Baggins' journey to the Lonely Mountain.");
-        book4.setFilePath("/books/hobbit.pdf");
-        book4.setCoverImagePath("/images/covers/hobbit.jpg");
+        book4.setFilePath("hobbit.pdf");
+        book4.setCoverImagePath("/images/covers/hobbit.svg");
         
         return bookRepository.saveAll(Arrays.asList(book1, book2, book3, book4));
     }

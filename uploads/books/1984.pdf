@@ -1,0 +1,6 @@
+This is a placeholder PDF for "1984" by George Orwell.
+
+In a real application, this would be the actual PDF content of the book.
+
+For now, this demonstrates that the book reading functionality works correctly.
+The file is served from the uploads/books/ directory via the BookFileController.

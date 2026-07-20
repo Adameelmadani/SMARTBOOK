@@ -17,7 +17,7 @@ SmartBook est une application web Java qui offre une plateforme de lecture de li
 
 - **Backend**: [Spring Boot](https://spring.io/projects/spring-boot)
 - **Sécurité**: [Spring Security](https://spring.io/projects/spring-security)
-- **Base de données**: [MySQL](https://www.mysql.com/)
+- **Base de données**: [H2](https://www.h2database.com/) en mode développement
 - **ORM**: [Spring Data JPA](https://spring.io/projects/spring-data-jpa)
 - **Frontend**: [Thymeleaf](https://www.thymeleaf.org/), [Bootstrap](https://getbootstrap.com/)
 - **Outil de build**: [Maven](https://maven.apache.org/)
@@ -27,13 +27,11 @@ SmartBook est une application web Java qui offre une plateforme de lecture de li
 ### Prérequis
 
 - Java 11 ou supérieur
-- MySQL 8.0 ou supérieur
 - Maven 3.6 ou supérieur
 
 ### Configuration de la base de données
 
-1. Créez une base de données MySQL nommée `smartbook`
-2. Mettez à jour les identifiants de la base de données dans `application.properties` si nécessaire
+L'application démarre maintenant avec une base H2 locale intégrée, donc aucune configuration MySQL n'est nécessaire pour l'exécution de développement.
 
 ### Construction et exécution
 
@@ -50,7 +48,7 @@ SmartBook est une application web Java qui offre une plateforme de lecture de li
 
 3. Exécutez l'application
    ```bash
-   java -jar target/smartbook-0.0.1-SNAPSHOT.jar
+   & 'D:\Program Files\openjdk-25_windows-x64_bin\jdk-25\bin\java.exe' -jar target\smartbook-0.0.1-SNAPSHOT.jar
    ```
 
 4. Accédez à l'application à l'adresse http://localhost:8080

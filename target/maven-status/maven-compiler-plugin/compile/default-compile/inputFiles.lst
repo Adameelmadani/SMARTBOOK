@@ -1,21 +1,22 @@
-D:\ENSAM\ENSAM S6\SMARTBOOK\src\main\java\com\smartbook\model\Book.java
-D:\ENSAM\ENSAM S6\SMARTBOOK\src\main\java\com\smartbook\config\DataSeeder.java
-D:\ENSAM\ENSAM S6\SMARTBOOK\src\main\java\com\smartbook\model\BookProgress.java
-D:\ENSAM\ENSAM S6\SMARTBOOK\src\main\java\com\smartbook\repository\RoleRepository.java
-D:\ENSAM\ENSAM S6\SMARTBOOK\src\main\java\com\smartbook\controller\BookController.java
-D:\ENSAM\ENSAM S6\SMARTBOOK\src\main\java\com\smartbook\repository\BookProgressRepository.java
-D:\ENSAM\ENSAM S6\SMARTBOOK\src\main\java\com\smartbook\service\RecommendationService.java
-D:\ENSAM\ENSAM S6\SMARTBOOK\src\main\java\com\smartbook\model\ERole.java
-D:\ENSAM\ENSAM S6\SMARTBOOK\src\main\java\com\smartbook\model\Role.java
-D:\ENSAM\ENSAM S6\SMARTBOOK\src\main\java\com\smartbook\controller\AuthController.java
-D:\ENSAM\ENSAM S6\SMARTBOOK\src\main\java\com\smartbook\repository\RatingRepository.java
-D:\ENSAM\ENSAM S6\SMARTBOOK\src\main\java\com\smartbook\model\User.java
-D:\ENSAM\ENSAM S6\SMARTBOOK\src\main\java\com\smartbook\config\DatabaseInitializer.java
-D:\ENSAM\ENSAM S6\SMARTBOOK\src\main\java\com\smartbook\SmartBookApplication.java
-D:\ENSAM\ENSAM S6\SMARTBOOK\src\main\java\com\smartbook\controller\HomeController.java
-D:\ENSAM\ENSAM S6\SMARTBOOK\src\main\java\com\smartbook\repository\UserRepository.java
-D:\ENSAM\ENSAM S6\SMARTBOOK\src\main\java\com\smartbook\repository\BookRepository.java
-D:\ENSAM\ENSAM S6\SMARTBOOK\src\main\java\com\smartbook\service\UserDetailsServiceImpl.java
-D:\ENSAM\ENSAM S6\SMARTBOOK\src\main\java\com\smartbook\model\Rating.java
-D:\ENSAM\ENSAM S6\SMARTBOOK\src\main\java\com\smartbook\security\UserDetailsImpl.java
-D:\ENSAM\ENSAM S6\SMARTBOOK\src\main\java\com\smartbook\security\WebSecurityConfig.java
+D:\ENSAM\Projets\SMARTBOOK\src\main\java\com\smartbook\controller\BookFileController.java
+D:\ENSAM\Projets\SMARTBOOK\src\main\java\com\smartbook\security\WebSecurityConfig.java
+D:\ENSAM\Projets\SMARTBOOK\src\main\java\com\smartbook\repository\BookProgressRepository.java
+D:\ENSAM\Projets\SMARTBOOK\src\main\java\com\smartbook\config\DatabaseInitializer.java
+D:\ENSAM\Projets\SMARTBOOK\src\main\java\com\smartbook\SmartBookApplication.java
+D:\ENSAM\Projets\SMARTBOOK\src\main\java\com\smartbook\config\DataSeeder.java
+D:\ENSAM\Projets\SMARTBOOK\src\main\java\com\smartbook\model\User.java
+D:\ENSAM\Projets\SMARTBOOK\src\main\java\com\smartbook\repository\RoleRepository.java
+D:\ENSAM\Projets\SMARTBOOK\src\main\java\com\smartbook\model\Role.java
+D:\ENSAM\Projets\SMARTBOOK\src\main\java\com\smartbook\repository\RatingRepository.java
+D:\ENSAM\Projets\SMARTBOOK\src\main\java\com\smartbook\controller\AuthController.java
+D:\ENSAM\Projets\SMARTBOOK\src\main\java\com\smartbook\security\UserDetailsImpl.java
+D:\ENSAM\Projets\SMARTBOOK\src\main\java\com\smartbook\controller\BookController.java
+D:\ENSAM\Projets\SMARTBOOK\src\main\java\com\smartbook\model\Rating.java
+D:\ENSAM\Projets\SMARTBOOK\src\main\java\com\smartbook\repository\BookRepository.java
+D:\ENSAM\Projets\SMARTBOOK\src\main\java\com\smartbook\controller\HomeController.java
+D:\ENSAM\Projets\SMARTBOOK\src\main\java\com\smartbook\service\RecommendationService.java
+D:\ENSAM\Projets\SMARTBOOK\src\main\java\com\smartbook\repository\UserRepository.java
+D:\ENSAM\Projets\SMARTBOOK\src\main\java\com\smartbook\model\ERole.java
+D:\ENSAM\Projets\SMARTBOOK\src\main\java\com\smartbook\model\Book.java
+D:\ENSAM\Projets\SMARTBOOK\src\main\java\com\smartbook\service\UserDetailsServiceImpl.java
+D:\ENSAM\Projets\SMARTBOOK\src\main\java\com\smartbook\model\BookProgress.java

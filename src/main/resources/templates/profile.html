@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/layout :: head('Profile - SmartBook')"></head>
+<body>
+    <header th:replace="fragments/layout :: app-nav('profile', ${user})"></header>
+
+    <main class="container my-4 my-lg-5">
+        <div class="hero-panel fade-up">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <div class="hero-kicker">Profile</div>
+                    <h1 class="hero-title section-title-compact mb-2">Your reading identity.</h1>
+                    <p class="hero-copy mb-0">A simple profile view with the reading stats that matter most.</p>
+                </div>
+                <div class="col-lg-4 mt-3 mt-lg-0">
+                    <div class="page-panel">
+                        <p class="mb-2"><strong>Username</strong></p>
+                        <p class="mb-0 text-muted" th:text="${user.username}">username</p>
+                        <hr>
+                        <p class="mb-2"><strong>Reviews</strong></p>
+                        <p class="mb-0 text-muted" th:text="${user.ratings.size()}">0</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-4 mb-3 fade-up-delay-1">
+                <article class="feature-card">
+                    <div class="pill mb-2">Email</div>
+                    <p class="mb-0 text-muted" th:text="${user.email != null ? user.email : 'Not set'}">email</p>
+                </article>
+            </div>
+            <div class="col-md-4 mb-3 fade-up-delay-2">
+                <article class="feature-card">
+                    <div class="pill mb-2">Reading lists</div>
+                    <p class="mb-0 text-muted" th:text="${user.bookProgresses.size()}">0</p>
+                </article>
+            </div>
+            <div class="col-md-4 mb-3 fade-up-delay-3">
+                <article class="feature-card">
+                    <div class="pill mb-2">Next step</div>
+                    <a href="/discover" class="btn btn-primary btn-block">Discover Books</a>
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <footer th:replace="fragments/layout :: footer"></footer>
+    <th:block th:replace="fragments/layout :: scripts(false)"></th:block>
+</body>
+</html>

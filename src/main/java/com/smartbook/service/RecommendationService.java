@@ -7,11 +7,13 @@ import com.smartbook.repository.BookRepository;
 import com.smartbook.repository.RatingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional(readOnly = true)
 public class RecommendationService {
     
     @Autowired
@@ -28,79 +30,87 @@ public class RecommendationService {
      */
     public List<Book> getRecommendationsForUser(User user, int limit) {
         try {
-            // If user is null or user has no ratings, return top rated books
-            if (user == null || user.getRatings() == null || user.getRatings().isEmpty()) {
+            if (user == null || user.getId() == null) {
                 return getTopRatedBooks(limit);
             }
             
-            // Get all users who have rated books
-            List<User> allUsers = ratingRepository.findDistinctUsers();
-            
-            // If not enough users for meaningful recommendations, return top rated books
-            if (allUsers.size() < 2) {
+            // Get all ratings for books the user hasn't rated
+            List<Rating> allRatings = ratingRepository.findAll();
+            if (allRatings.isEmpty()) {
                 return getTopRatedBooks(limit);
             }
             
-            // Find similar users (users with similar tastes)
-            Map<User, Double> userSimilarities = new HashMap<>();
-            for (User otherUser : allUsers) {
-                if (otherUser != null && otherUser.getId() != null && !otherUser.getId().equals(user.getId())) {
-                    double similarity = calculateSimilarity(user, otherUser);
-                    userSimilarities.put(otherUser, similarity);
+            // Build user-item matrix
+            Map<Long, Map<Long, Integer>> ratingsByUser = new HashMap<>();
+            for (Rating rating : allRatings) {
+                if (rating.getUser() == null || rating.getBook() == null || 
+                    rating.getUser().getId() == null || rating.getBook().getId() == null) {
+                    continue;
                 }
+                Long userId = rating.getUser().getId();
+                ratingsByUser.computeIfAbsent(userId, key -> new HashMap<>())
+                        .put(rating.getBook().getId(), rating.getRating());
             }
             
-            // Get books the user hasn't read yet
+            Map<Long, Integer> currentUserRatings = ratingsByUser.get(user.getId());
+            if (currentUserRatings == null || currentUserRatings.isEmpty()) {
+                return getTopRatedBooks(limit);
+            }
+
             List<Book> allBooks = bookRepository.findAll();
-            Set<Long> readBookIds = user.getRatings().stream()
-                    .filter(r -> r.getBook() != null)
-                    .map(rating -> rating.getBook().getId())
-                    .collect(Collectors.toSet());
+            Set<Long> readBookIds = currentUserRatings.keySet();
             
             List<Book> unreadBooks = allBooks.stream()
                     .filter(book -> !readBookIds.contains(book.getId()))
                     .collect(Collectors.toList());
             
-            // If user has read all books, return top rated books
             if (unreadBooks.isEmpty()) {
                 return getTopRatedBooks(limit);
             }
             
-            // Calculate recommendation scores for unread books
+            // Calculate similarity with other users
+            Map<Long, Double> userSimilarities = new HashMap<>();
+            for (Map.Entry<Long, Map<Long, Integer>> entry : ratingsByUser.entrySet()) {
+                Long otherUserId = entry.getKey();
+                if (!otherUserId.equals(user.getId())) {
+                    double similarity = calculateSimilarity(currentUserRatings, entry.getValue());
+                    if (similarity > 0.1) { // Only consider meaningful similarities
+                        userSimilarities.put(otherUserId, similarity);
+                    }
+                }
+            }
+
+            // If no similar users, fallback to top rated
+            if (userSimilarities.isEmpty()) {
+                return getTopRatedBooks(limit);
+            }
+
+            // Score unread books based on similar users' ratings
             Map<Book, Double> bookScores = new HashMap<>();
             for (Book book : unreadBooks) {
                 double score = 0.0;
                 double totalSimilarity = 0.0;
                 
-                for (Map.Entry<User, Double> entry : userSimilarities.entrySet()) {
-                    User otherUser = entry.getKey();
-                    Double similarity = entry.getValue();
-                    
-                    if (otherUser.getRatings() != null) {
-                        // Find if the other user has rated this book
-                        Optional<Rating> otherRating = otherUser.getRatings().stream()
-                                .filter(r -> r.getBook() != null && r.getBook().getId().equals(book.getId()))
-                                .findFirst();
-                        
-                        if (otherRating.isPresent()) {
-                            score += similarity * otherRating.get().getRating();
-                            totalSimilarity += similarity;
-                        }
+                for (Map.Entry<Long, Double> entry : userSimilarities.entrySet()) {
+                    Map<Long, Integer> otherRatings = ratingsByUser.get(entry.getKey());
+                    Integer otherRating = otherRatings != null ? otherRatings.get(book.getId()) : null;
+
+                    if (otherRating != null) {
+                        double similarity = entry.getValue();
+                        score += similarity * otherRating;
+                        totalSimilarity += similarity;
                     }
                 }
-                
-                // Normalize score by total similarity if we have data
+
                 if (totalSimilarity > 0) {
                     bookScores.put(book, score / totalSimilarity);
                 }
             }
-            
-            // If no scores could be calculated, return top rated books
+
             if (bookScores.isEmpty()) {
                 return getTopRatedBooks(limit);
             }
-            
-            // Sort books by score and return top recommendations
+
             return bookScores.entrySet().stream()
                     .sorted(Map.Entry.<Book, Double>comparingByValue().reversed())
                     .limit(limit)
@@ -120,86 +130,59 @@ public class RecommendationService {
      */
     private List<Book> getTopRatedBooks(int limit) {
         try {
-            return bookRepository.findTop3ByOrderByAverageRatingDesc();
+            return bookRepository.findAll().stream()
+                    .filter(b -> b.getStoredAverageRating() != null && b.getStoredAverageRating() > 0)
+                    .sorted(Comparator.comparingDouble(Book::getStoredAverageRating).reversed())
+                    .limit(limit)
+                    .collect(Collectors.toList());
         } catch (Exception e) {
-            // If that fails, just return the first few books
             System.err.println("Error getting top rated books: " + e.getMessage());
             List<Book> books = bookRepository.findAll();
             return books.stream().limit(limit).collect(Collectors.toList());
         }
     }
-    
-    /**
-     * Calculate similarity between two users based on their ratings
-     * This uses Pearson correlation coefficient
-     */
-    private double calculateSimilarity(User user1, User user2) {
-        try {
-            // Ensure ratings collections are available
-            if (user1.getRatings() == null || user2.getRatings() == null) {
-                return 0.0;
-            }
-            
-            // Find books both users have rated
-            Set<Long> user1BookIds = user1.getRatings().stream()
-                    .filter(r -> r.getBook() != null)
-                    .map(rating -> rating.getBook().getId())
-                    .collect(Collectors.toSet());
-            
-            if (user1BookIds.isEmpty()) {
-                return 0.0;
-            }
-            
-            List<Rating> commonRatings = user2.getRatings().stream()
-                    .filter(r -> r.getBook() != null && user1BookIds.contains(r.getBook().getId()))
-                    .collect(Collectors.toList());
-            
-            // If no common ratings, return 0 similarity
-            if (commonRatings.isEmpty()) {
-                return 0.0;
-            }
-            
-            // Calculate averages
-            double user1Avg = user1.getRatings().stream()
-                    .mapToInt(Rating::getRating)
-                    .average()
-                    .orElse(0.0);
-            
-            double user2Avg = user2.getRatings().stream()
-                    .mapToInt(Rating::getRating)
-                    .average()
-                    .orElse(0.0);
-            
-            double numerator = 0.0;
-            double denominator1 = 0.0;
-            double denominator2 = 0.0;
-            
-            // Calculate Pearson correlation
-            for (Rating user2Rating : commonRatings) {
-                Optional<Rating> user1Rating = user1.getRatings().stream()
-                        .filter(r -> r.getBook() != null && r.getBook().getId().equals(user2Rating.getBook().getId()))
-                        .findFirst();
-                
-                if (user1Rating.isPresent()) {
-                    double user1Dev = user1Rating.get().getRating() - user1Avg;
-                    double user2Dev = user2Rating.getRating() - user2Avg;
-                    
-                    numerator += user1Dev * user2Dev;
-                    denominator1 += Math.pow(user1Dev, 2);
-                    denominator2 += Math.pow(user2Dev, 2);
-                }
-            }
-            
-            // Avoid division by zero
-            if (denominator1 <= 0 || denominator2 <= 0) {
-                return 0.0;
-            }
-            
-            return numerator / (Math.sqrt(denominator1) * Math.sqrt(denominator2));
-        } catch (Exception e) {
-            // Log the exception
-            System.err.println("Error calculating similarity: " + e.getMessage());
-            return 0.0;
+
+    private double calculateSimilarity(Map<Long, Integer> user1Ratings, Map<Long, Integer> user2Ratings) {
+        Set<Long> commonBookIds = new HashSet<>(user1Ratings.keySet());
+        commonBookIds.retainAll(user2Ratings.keySet());
+
+        if (commonBookIds.size() < 2) {
+            return 0.0; // Need at least 2 common ratings for meaningful similarity
         }
+
+        double user1Avg = user1Ratings.values().stream().mapToInt(Integer::intValue).average().orElse(0.0);
+        double user2Avg = user2Ratings.values().stream().mapToInt(Integer::intValue).average().orElse(0.0);
+
+        double numerator = 0.0;
+        double denominator1 = 0.0;
+        double denominator2 = 0.0;
+
+        for (Long bookId : commonBookIds) {
+            double user1Dev = user1Ratings.get(bookId) - user1Avg;
+            double user2Dev = user2Ratings.get(bookId) - user2Avg;
+            numerator += user1Dev * user2Dev;
+            denominator1 += Math.pow(user1Dev, 2);
+            denominator2 += Math.pow(user2Dev, 2);
+        }
+
+        if (denominator1 <= 0 || denominator2 <= 0) {
+            // Fallback to Cosine Similarity if variance is zero
+            double dotProduct = 0.0;
+            double norm1 = 0.0;
+            double norm2 = 0.0;
+            for (Long bookId : commonBookIds) {
+                int r1 = user1Ratings.get(bookId);
+                int r2 = user2Ratings.get(bookId);
+                dotProduct += r1 * r2;
+                norm1 += r1 * r1;
+                norm2 += r2 * r2;
+            }
+            if (norm1 <= 0 || norm2 <= 0) {
+                return 0.0;
+            }
+            return dotProduct / (Math.sqrt(norm1) * Math.sqrt(norm2));
+        }
+
+        return numerator / (Math.sqrt(denominator1) * Math.sqrt(denominator2));
     }
 }
