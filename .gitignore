@@ -1,0 +1,36 @@
+# Build artifacts
+target/
+*.jar
+*.war
+*.ear
+
+# Build logs
+*.log
+build.log
+build2.log
+
+# Local database files
+data/
+*.mv.db
+*.trace.db
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Uploaded files (runtime uploads)
+uploads/
+
+# Maven
+maven-status/
+maven-archiver/
+
+# IDEA
+*.iml

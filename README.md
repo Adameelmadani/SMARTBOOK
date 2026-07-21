@@ -1,80 +1,268 @@
 # SmartBook
 
-## Une plateforme de lecture de livres avec système de recommandations intelligentes
+[![Java](https://img.shields.io/badge/Java-11+-blue.svg)](https://www.oracle.com/java/technologies/javase-downloads.html)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.7.0-brightgreen.svg)](https://spring.io/projects/spring-boot)
+[![Maven](https://img.shields.io/badge/Maven-3.6+-red.svg)](https://maven.apache.org/)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-SmartBook est une application web Java qui offre une plateforme de lecture de livres en ligne avec des recommandations intelligentes. L'application utilise le filtrage collaboratif pour suggérer des livres aux utilisateurs en fonction de leurs habitudes de lecture et de leurs évaluations.
+Une plateforme de lecture de livres en ligne avec système de recommandations intelligentes basé sur le filtrage collaboratif.
 
 ## Fonctionnalités
 
-- **Gestion des utilisateurs**: Inscription, connexion et profils utilisateurs
-- **Bibliothèque de livres**: Parcourez et recherchez dans une collection de livres
-- **Suivi de progression de lecture**: Suivez votre progression pour chaque livre
-- **Système d'évaluation**: Notez les livres et rédigez des critiques
-- **Recommandations intelligentes**: Recevez des recommandations personnalisées basées sur vos préférences et votre historique de lecture
-- **Interface réactive**: Interface moderne et responsive construite avec Bootstrap
+- **Gestion des utilisateurs** : Inscription, connexion, profils utilisateurs avec rôles (Admin/User)
+- **Bibliothèque de livres** : Parcourez, recherchez et filtrez une collection de livres
+- **Lecture en ligne** : Visualisez les livres directement dans le navigateur (PDF.js)
+- **Suivi de progression** : Suivez votre progression de lecture page par page
+- **Système d'évaluation** : Notez les livres (1-5 étoiles) et rédigez des critiques
+- **Recommandations intelligentes** : Recommandations personnalisées basées sur le filtrage collaboratif (corrélation de Pearson)
+- **Interface responsive** : Interface moderne avec Bootstrap 5 et Thymeleaf
+- **Sécurité** : Authentification Spring Security avec BCrypt, protection CSRF, gestion des rôles
 
-## Stack technique
+## Stack Technique
 
-- **Backend**: [Spring Boot](https://spring.io/projects/spring-boot)
-- **Sécurité**: [Spring Security](https://spring.io/projects/spring-security)
-- **Base de données**: [H2](https://www.h2database.com/) en mode développement
-- **ORM**: [Spring Data JPA](https://spring.io/projects/spring-data-jpa)
-- **Frontend**: [Thymeleaf](https://www.thymeleaf.org/), [Bootstrap](https://getbootstrap.com/)
-- **Outil de build**: [Maven](https://maven.apache.org/)
+| Composant | Technologie |
+|-----------|-------------|
+| **Backend** | Spring Boot 2.7.0 |
+| **Sécurité** | Spring Security 5 + BCrypt |
+| **Base de données** | H2 (dev) / MySQL (prod) |
+| **ORM** | Spring Data JPA / Hibernate |
+| **Frontend** | Thymeleaf + Bootstrap 5 |
+| **Build** | Maven 3.6+ |
+| **Java** | 11+ |
+| **Lecture PDF** | PDF.js (via CDN) |
+| **Recommandations** | Filtrage collaboratif (Pearson Correlation) |
 
-## Instructions d'installation
+## Architecture
 
-### Prérequis
+```
+src/main/java/com/smartbook/
+├── config/           # Configuration (DataSeeder, DatabaseInitializer)
+├── controller/       # Contrôleurs MVC (Auth, Book, BookFile, Home)
+├── model/            # Entités JPA (Book, User, Rating, BookProgress, Role)
+├── repository/       # Repositories Spring Data JPA
+├── security/         # Config sécurité, UserDetails
+├── service/          # Services métier (RecommendationService, UserDetailsService)
+└── SmartBookApplication.java
+```
 
-- Java 11 ou supérieur
-- Maven 3.6 ou supérieur
+## Prérequis
 
-### Configuration de la base de données
+- **Java 11+** (testé avec Java 11 et 17)
+- **Maven 3.6+**
+- **Git** (pour cloner le repo)
 
-L'application démarre maintenant avec une base H2 locale intégrée, donc aucune configuration MySQL n'est nécessaire pour l'exécution de développement.
+## Installation et Démarrage
 
-### Construction et exécution
+### 1. Cloner le repository
 
-1. Clonez le dépôt
-   ```bash
-   git clone https://github.com/votre-nom/smartbook.git
-   cd smartbook
-   ```
+```bash
+git clone https://github.com/Adameelmadani/smartbook.git
+cd smartbook
+```
 
-2. Construisez l'application
-   ```bash
-   mvn clean package
-   ```
+### 2. Construire le projet
 
-3. Exécutez l'application
-   ```bash
-   & 'D:\Program Files\openjdk-25_windows-x64_bin\jdk-25\bin\java.exe' -jar target\smartbook-0.0.1-SNAPSHOT.jar
-   ```
+```bash
+mvn clean package
+```
 
-4. Accédez à l'application à l'adresse http://localhost:8080
+### 3. Exécuter l'application
 
-### Comptes par défaut
+**Mode production (JAR) :**
+```bash
+java -jar target/smartbook-0.0.1-SNAPSHOT.jar
+```
 
-L'application initialise certaines données lorsqu'elle s'exécute avec le profil `dev` :
-
-- **Administrateur**:
-  - Nom d'utilisateur: `admin`
-  - Mot de passe: `admin123`
-  
-- **Utilisateurs réguliers**:
-  - Nom d'utilisateur: `user1`
-  - Mot de passe: `password`
-
-## Système de recommandation
-
-Le système de recommandation utilise le filtrage collaboratif avec le coefficient de corrélation de Pearson pour trouver des utilisateurs similaires et recommander des livres qu'ils ont appréciés. Si les données disponibles ne sont pas suffisantes pour des recommandations pertinentes, le système propose alors les livres les plus populaires.
-
-## Développement
-
-Pour exécuter en mode développement avec des données d'exemple :
-
+**Mode développement (avec données de test) :**
 ```bash
 mvn spring-boot:run -Dspring-boot.run.profiles=dev
 ```
 
-Cette commande initialisera la base de données avec des exemples de livres, d'utilisateurs et d'évaluations à des fins de test.
+### 4. Accéder à l'application
+
+Ouvrez votre navigateur à : **http://localhost:8080**
+
+## Comptes par défaut (profil `dev`)
+
+| Rôle | Username | Mot de passe |
+|------|----------|--------------|
+| Admin | `admin` | `admin123` |
+| Utilisateur | `user1` | `password` |
+| Utilisateur | `user2` | `password` |
+
+> **Note** : Ces comptes sont créés automatiquement au démarrage avec le profil `dev` via `DataSeeder`.
+
+## Configuration
+
+### Base de données (application.properties)
+
+```properties
+# Développement (H2 en mémoire)
+spring.datasource.url=jdbc:h2:mem:smartbook
+spring.datasource.driver-class-name=org.h2.Driver
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+
+# Production (MySQL) - décommentez et configurez
+# spring.datasource.url=jdbc:mysql://localhost:3306/smartbook?useSSL=false&serverTimezone=UTC
+# spring.datasource.username=your_username
+# spring.datasource.password=your_password
+# spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
+```
+
+### Profils Maven
+
+```bash
+# Développement (H2 + données de test)
+mvn spring-boot:run -Dspring-boot.run.profiles=dev
+
+# Production (MySQL)
+mvn spring-boot:run -Dspring-boot.run.profiles=prod
+```
+
+## Système de Recommandation
+
+Le système utilise le **filtrage collaboratif basé sur les utilisateurs** avec la **corrélation de Pearson** :
+
+1. **Calcul de similarité** : Coefficient de corrélation de Pearson entre utilisateurs basé sur les notes communes
+2. **Sélection des voisins** : Top-K utilisateurs les plus similaires (seuil de similarité configurable)
+3. **Prédiction** : Note prédite = moyenne utilisateur + somme pondérée des écarts des voisins
+4. **Fallback** : Si données insuffisantes → recommandations populaires (livres les mieux notés)
+
+**Configuration** (`RecommendationService.java`) :
+```java
+private static final int MIN_COMMON_RATINGS = 3;  // Notes communes minimales
+private static final double SIMILARITY_THRESHOLD = 0.1;  // Seuil similarité
+private static final int MAX_NEIGHBORS = 10;  // Voisins max
+```
+
+## Structure de la Base de Données
+
+### Entités Principales
+
+| Entité | Description |
+|--------|-------------|
+| `User` | Utilisateurs (username, email, password, roles) |
+| `Role` | Rôles (ROLE_USER, ROLE_ADMIN) |
+| `Book` | Livres (titre, auteur, description, couverture, fichier PDF) |
+| `Rating` | Notes (user, book, score 1-5, commentaire) |
+| `BookProgress` | Progression lecture (user, book, page actuelle, total pages) |
+
+### Relations
+
+- `User` ↔ `Role` : Many-to-Many
+- `User` ↔ `Rating` : One-to-Many
+- `User` ↔ `BookProgress` : One-to-Many
+- `Book` ↔ `Rating` : One-to-Many
+- `Book` ↔ `BookProgress` : One-to-Many
+
+## API Endpoints
+
+### Authentification
+| Méthode | Endpoint | Description |
+|---------|----------|-------------|
+| GET | `/signin` | Page de connexion |
+| GET | `/signup` | Page d'inscription |
+| POST | `/signin` | Traiter connexion |
+| POST | `/signup` | Traiter inscription |
+| GET | `/logout` | Déconnexion |
+
+### Livres
+| Méthode | Endpoint | Description |
+|---------|----------|-------------|
+| GET | `/` | Page d'accueil (livres récents) |
+| GET | `/discover` | Découvrir tous les livres (recherche, filtres) |
+| GET | `/books/{id}` | Détail d'un livre |
+| GET | `/books/{id}/read` | Lecteur PDF (lecture en ligne) |
+| GET | `/books/{id}/download` | Télécharger le PDF |
+
+### Profil & Progression
+| Méthode | Endpoint | Description |
+|---------|----------|-------------|
+| GET | `/profile` | Profil utilisateur |
+| GET | `/profile/progress` | Progression de lecture |
+| POST | `/books/{id}/progress` | Mettre à jour progression |
+| POST | `/books/{id}/rate` | Noter un livre |
+
+### Administration
+| Méthode | Endpoint | Description |
+|---------|----------|-------------|
+| GET | `/admin/dashboard` | Tableau de bord admin |
+| GET | `/admin/books` | Gestion livres |
+| POST | `/admin/books` | Ajouter livre |
+| POST | `/admin/books/{id}/upload` | Uploader PDF |
+
+## Captures d'écran
+
+| Page | Description |
+|------|-------------|
+| ![Accueil](screenshots/home.png) | Page d'accueil avec livres recommandés |
+| ![Découvrir](screenshots/discover.png) | Bibliothèque avec filtres et recherche |
+| ![Lecture](screenshots/reader.png) | Lecteur PDF intégré avec progression |
+| ![Profil](screenshots/profile.png) | Profil utilisateur et statistiques |
+
+> *Ajoutez vos captures d'écran dans le dossier `screenshots/`*
+
+## Développement
+
+### Structure du Projet
+
+```
+smartbook/
+├── src/
+│   ├── main/
+│   │   ├── java/com/smartbook/     # Code source Java
+│   │   └── resources/
+│   │       ├── static/             # CSS, JS, images
+│   │       ├── templates/          # Templates Thymeleaf
+│   │       └── application.properties
+│   └── test/                       # Tests unitaires
+├── target/                         # Artefacts de build (ignorés par git)
+├── uploads/                        # Fichiers uploadés (ignorés par git)
+├── data/                           # Base H2 locale (ignorée par git)
+├── pom.xml                         # Configuration Maven
+└── README.md
+```
+
+### Lancer les tests
+
+```bash
+mvn test
+```
+
+### Build pour production
+
+```bash
+mvn clean package -Pprod
+```
+
+Le JAR sera dans `target/smartbook-0.0.1-SNAPSHOT.jar`
+
+## Déploiement
+
+### Docker (optionnel)
+
+```dockerfile
+FROM openjdk:11-jre-slim
+COPY target/smartbook-0.0.1-SNAPSHOT.jar app.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "/app.jar"]
+```
+
+```bash
+docker build -t smartbook .
+docker run -p 8080:8080 smartbook
+```
+
+### Variables d'environnement (Production)
+
+```bash
+export SPRING_PROFILES_ACTIVE=prod
+export SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/smartbook
+export SPRING_DATASOURCE_USERNAME=smartbook
+export SPRING_DATASOURCE_PASSWORD=secret
+export SERVER_PORT=8080
+```
+
+## Licence
+
+Ce projet est sous licence **MIT** - voir le fichier [LICENSE](LICENSE) pour plus de détails.
