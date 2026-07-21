@@ -18,13 +18,13 @@
 
         <!-- Search form -->
         <div class="mb-4 fade-up">
-            <form action="/search" method="get" class="form-inline d-flex justify-content-center">
+            <form action="/search" method="get" class="form-inline d-flex justify-content-center add-flex-gap">
                 <input name="q" class="form-control flex-grow-1 me-2" type="search" placeholder="Search by title, author, or genre" aria-label="Search" th:value="${query}">
                 <button class="btn btn-primary" type="submit">Search</button>
             </form>
         </div>
 
-        <div th:if="${query != null and !query.empty()}" class="mb-4 fade-up">
+        <div th:if="${query != null and !query.empty}" class="mb-4 fade-up">
             <div class="d-flex justify-content-between align-items-center flex-wrap">
                 <div>
                     <h2 class="section-title-compact mb-0">Search results for <span class="text-primary">"<span th:text="${query}"></span>"</span></h2>
@@ -34,7 +34,7 @@
             </div>
         </div>
 
-        <div th:if="${query == null or query.empty()}" class="mb-4 fade-up">
+        <div th:if="${query == null or query.empty}" class="mb-4 fade-up">
             <h2 class="section-title-compact mb-0">All Books</h2>
             <p class="text-muted mb-0">Browse our complete catalog</p>
         </div>
@@ -42,8 +42,8 @@
         <div th:if="${#lists.isEmpty(books)}" class="text-center py-5">
             <div class="fade-up">
                 <i class="fas fa-search fa-3x text-muted mb-3"></i>
-                <h4 th:if="${query != null and !query.empty()}">No books found for "<span th:text="${query}"></span>"</h4>
-                <h4 th:if="${query == null or query.empty()}">No books available</h4>
+                <h4 th:if="${query != null and !query.empty}">No books found for "<span th:text="${query}"></span>"</h4>
+                <h4 th:if="${query == null or query.empty}">No books available</h4>
                 <p class="text-muted">Try a different search term or check back later.</p>
                 <a href="/discover" class="btn btn-primary mt-3">View all books</a>
             </div>
