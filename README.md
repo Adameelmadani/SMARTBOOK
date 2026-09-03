@@ -7,6 +7,8 @@
 
 Une plateforme de lecture de livres en ligne avec système de recommandations intelligentes basé sur le filtrage collaboratif.
 
+<img src="demo/demo.gif">
+
 ## Fonctionnalités
 
 - **Gestion des utilisateurs** : Inscription, connexion, profils utilisateurs avec rôles (Admin/User)
@@ -195,12 +197,10 @@ private static final int MAX_NEIGHBORS = 10;  // Voisins max
 
 | Page | Description |
 |------|-------------|
-| ![Accueil](screenshots/home.png) | Page d'accueil avec livres recommandés |
-| ![Découvrir](screenshots/discover.png) | Bibliothèque avec filtres et recherche |
-| ![Lecture](screenshots/reader.png) | Lecteur PDF intégré avec progression |
-| ![Profil](screenshots/profile.png) | Profil utilisateur et statistiques |
-
-> *Ajoutez vos captures d'écran dans le dossier `screenshots/`*
+| Accueil | Page d'accueil avec livres recommandés |
+| Découvrir | Bibliothèque avec filtres et recherche |
+| Lecture | Lecteur PDF intégré avec progression |
+| Profil | Profil utilisateur et statistiques |
 
 ## Développement
 
