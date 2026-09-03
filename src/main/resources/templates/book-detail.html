@@ -44,7 +44,7 @@
                     </div>
 
                     <div class="action-buttons">
-                        <a th:href="${book.filePath}" target="_blank" rel="noopener noreferrer" class="btn btn-primary mr-2">Read Now</a>
+                        <a th:href="@{/books/{filename}(filename=${book.filePath})}" target="_blank" rel="noopener noreferrer" class="btn btn-primary mr-2">Read Now</a>
                     </div>
                 </section>
 
